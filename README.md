@@ -8,6 +8,9 @@ This repository is an early implementation with deterministic core algorithms, o
 file-format IO, a GUI-independent plasmid-map renderer, and a first usable PySide6
 desktop shell.
 
+The v0.1-alpha line is intended for local research/evaluation workflows and is not
+validated for clinical, diagnostic, regulated, or production decision-making use.
+
 ## Implemented
 
 - Python `src/` package layout.
