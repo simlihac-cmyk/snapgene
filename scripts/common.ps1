@@ -139,12 +139,12 @@ function Initialize-CleanVenv {
         Remove-Item -LiteralPath $absoluteVenv -Recurse -Force
     }
     if (-not (Test-Path -LiteralPath $absoluteVenv)) {
-        Invoke-PythonCommand $Python @("-m", "venv", $absoluteVenv)
+        Invoke-PythonCommand $Python @("-m", "venv", $absoluteVenv) | Out-Host
     }
 
     $venvPython = Get-VenvPythonPath -VenvPath $absoluteVenv
-    Invoke-CheckedCommand $venvPython @((Join-Path $script:RepoRoot "scripts/check_python.py"))
-    Invoke-CheckedCommand $venvPython @("-m", "pip", "install", "--upgrade", "pip")
+    Invoke-CheckedCommand $venvPython @((Join-Path $script:RepoRoot "scripts/check_python.py")) | Out-Host
+    Invoke-CheckedCommand $venvPython @("-m", "pip", "install", "--upgrade", "pip") | Out-Host
     return $venvPython
 }
 
@@ -163,5 +163,5 @@ function Install-PlasmidLabDev {
         $constraints,
         "-e",
         $editableSpec
-    )
+    ) | Out-Host
 }
