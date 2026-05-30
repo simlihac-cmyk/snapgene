@@ -1,0 +1,43 @@
+{
+  "library": "PlasmidLab common synthetic feature fragments",
+  "license": "CC0-1.0",
+  "notes": "Short public-domain style synthetic fragments for deterministic feature detection tests and demos. This is not a proprietary feature database.",
+  "features": [
+    {
+      "name": "lac promoter fragment",
+      "type": "promoter",
+      "sequence": "AATTGTGAGCGGATAACAATT",
+      "aliases": ["lac promoter", "lac operator fragment"],
+      "strand_behavior": "both",
+      "minimum_identity": 0.9,
+      "notes": "Short lac regulatory-region fragment used for open synthetic examples."
+    },
+    {
+      "name": "T7 promoter fragment",
+      "type": "promoter",
+      "sequence": "TAATACGACTCACTATAGGG",
+      "aliases": ["T7 promoter", "T7 phi 10 promoter fragment"],
+      "strand_behavior": "both",
+      "minimum_identity": 0.95,
+      "notes": "Canonical short T7 promoter consensus fragment."
+    },
+    {
+      "name": "generic ori fragment",
+      "type": "rep_origin",
+      "sequence": "AATCTGCTGCTTGCAAACAAAAAAACCACCGC",
+      "aliases": ["ori", "origin fragment", "generic plasmid origin fragment"],
+      "strand_behavior": "non_directional",
+      "minimum_identity": 0.9,
+      "notes": "Generic plasmid-origin-like fragment for synthetic examples."
+    },
+    {
+      "name": "generic antibiotic marker fragment",
+      "type": "CDS",
+      "sequence": "ATGAGTATTCAACATTTCCGTGTCGCCCTTAT",
+      "aliases": ["antibiotic marker", "resistance marker fragment"],
+      "strand_behavior": "both",
+      "minimum_identity": 0.9,
+      "notes": "Generic antibiotic-resistance-marker-like coding fragment for synthetic examples."
+    }
+  ]
+}

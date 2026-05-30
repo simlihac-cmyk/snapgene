@@ -1,0 +1,50 @@
+name: CI
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  test-and-build:
+    runs-on: windows-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.12", "3.13"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Confirm release Python
+        shell: pwsh
+        run: |
+          python --version
+          python .\scripts\check_python.py
+      - name: Release build, smoke checks, and checksums
+        shell: pwsh
+        run: pwsh -NoProfile -ExecutionPolicy Bypass -File .\scripts\build_all.ps1
+      - name: List release artifacts
+        shell: pwsh
+        run: |
+          Get-ChildItem -Path dist -Recurse | Select-Object FullName, Length
+      - name: Upload desktop artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: PlasmidLab-windows-py${{ matrix.python-version }}
+          if-no-files-found: error
+          path: |
+            dist/PlasmidLab
+            dist/PlasmidLab-windows.zip
+            dist/SHA256SUMS.txt
+      - name: Upload Python package artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: python-package-py${{ matrix.python-version }}
+          if-no-files-found: error
+          path: |
+            dist/*.whl
+            dist/*.tar.gz
+            dist/SHA256SUMS.txt

@@ -1,0 +1,20 @@
+{
+  "id": "1kb_dna_ladder",
+  "name": "1 kb DNA ladder",
+  "description": "Synthetic open ladder definition for approximate visualization.",
+  "source": "PlasmidLab synthetic open definition",
+  "bands": [
+    {"size_bp": 10000, "mass_ng": 60, "label": "10 kb"},
+    {"size_bp": 8000, "mass_ng": 40, "label": "8 kb"},
+    {"size_bp": 6000, "mass_ng": 40, "label": "6 kb"},
+    {"size_bp": 5000, "mass_ng": 70, "label": "5 kb"},
+    {"size_bp": 4000, "mass_ng": 40, "label": "4 kb"},
+    {"size_bp": 3000, "mass_ng": 40, "label": "3 kb"},
+    {"size_bp": 2000, "mass_ng": 50, "label": "2 kb"},
+    {"size_bp": 1500, "mass_ng": 35, "label": "1.5 kb"},
+    {"size_bp": 1000, "mass_ng": 55, "label": "1 kb"},
+    {"size_bp": 750, "mass_ng": 30, "label": "750 bp"},
+    {"size_bp": 500, "mass_ng": 35, "label": "500 bp"},
+    {"size_bp": 250, "mass_ng": 25, "label": "250 bp"}
+  ]
+}
