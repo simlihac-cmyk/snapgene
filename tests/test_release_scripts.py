@@ -42,6 +42,10 @@ def test_frozen_entry_smoke_json_reports_package_resource_status(tmp_path) -> No
     assert '"feature_library_entries":' in smoke_json
 
 
+def test_frozen_entry_version_smoke_does_not_import_gui() -> None:
+    assert frozen_main(["--version"]) == 0
+
+
 def test_generate_checksums_requires_all_release_artifacts(tmp_path, monkeypatch) -> None:
     dist = tmp_path / "dist"
     pyinstaller_dir = dist / "PlasmidLab"

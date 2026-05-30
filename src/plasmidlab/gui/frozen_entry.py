@@ -4,6 +4,8 @@ from __future__ import annotations
 
 import json
 import sys
+from importlib.metadata import PackageNotFoundError
+from importlib.metadata import version as package_version
 from importlib import resources
 from importlib.util import find_spec
 from pathlib import Path
@@ -17,9 +19,7 @@ def main(argv: list[str] | None = None) -> int:
         _write_stdout(_gui_cli_help())
         return 0
     if "--version" in arguments:
-        import plasmidlab
-
-        _write_stdout(f"PlasmidLab {plasmidlab.__version__}\n")
+        _write_stdout(f"PlasmidLab {_plasmidlab_version()}\n")
         return 0
     if "--smoke-json" in arguments:
         index = arguments.index("--smoke-json")
@@ -29,7 +29,6 @@ def main(argv: list[str] | None = None) -> int:
             msg = "--smoke-json requires an output path"
             raise SystemExit(msg) from error
 
-        import plasmidlab
         from plasmidlab.core.feature_annotation import load_feature_library
 
         feature_resource_root = resources.files("plasmidlab.data.features")
@@ -45,7 +44,7 @@ def main(argv: list[str] | None = None) -> int:
                     "application": "PlasmidLab",
                     "cli": True,
                     "feature_library": feature_library_available,
-                    "version": plasmidlab.__version__,
+                    "version": _plasmidlab_version(),
                     "package_resources": package_resources_available,
                     "feature_library_entries": len(library),
                     "feature_resource_entries": len(resource_entries),
@@ -62,6 +61,13 @@ def main(argv: list[str] | None = None) -> int:
     from plasmidlab.gui.main_window import main as gui_main
 
     return gui_main(arguments)
+
+
+def _plasmidlab_version() -> str:
+    try:
+        return package_version("plasmidlab")
+    except PackageNotFoundError:
+        return "0.1.0"
 
 
 def _gui_cli_help() -> str:
