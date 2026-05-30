@@ -16,5 +16,5 @@ Invoke-CheckedCommand $venvPython @(
     "-m",
     "PyInstaller",
     "--noconfirm",
-    "packaging/pyinstaller/plasmidlab.spec"
+    "build_support/pyinstaller/plasmidlab.spec"
 )

@@ -96,7 +96,7 @@ The local desktop artifact is created under:
 dist/PlasmidLab/
 ```
 
-The PyInstaller configuration is in `packaging/pyinstaller/plasmidlab.spec`. It bundles
+The PyInstaller configuration is in `build_support/pyinstaller/plasmidlab.spec`. It bundles
 the PySide6 desktop app, packaged PlasmidLab resources, the built-in open feature
 library from `plasmidlab.data.features`, and the original placeholder icon assets.
 The spec intentionally uses focused Biopython hidden imports instead of collecting every

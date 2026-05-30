@@ -20,7 +20,7 @@ Invoke-CheckedCommand $venvPython @(
     "-m",
     "PyInstaller",
     "--noconfirm",
-    "packaging/pyinstaller/plasmidlab.spec"
+    "build_support/pyinstaller/plasmidlab.spec"
 )
 Invoke-CheckedCommand $venvPython @("scripts/smoke_release.py", "--pyinstaller-only")
 Invoke-CheckedCommand $venvPython @("scripts/generate_checksums.py")
