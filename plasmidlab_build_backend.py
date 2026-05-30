@@ -76,14 +76,6 @@ def get_requires_for_build_editable(config_settings: Mapping[str, Any] | None = 
     return _hatchling_build().get_requires_for_build_editable(config_settings)
 
 
-def prepare_metadata_for_build_editable(
-    metadata_directory: str,
-    config_settings: Mapping[str, Any] | None = None,
-) -> str:
-    _ensure_supported_python()
-    return _hatchling_build().prepare_metadata_for_build_editable(metadata_directory, config_settings)
-
-
 def build_editable(
     wheel_directory: str,
     config_settings: Mapping[str, Any] | None = None,
