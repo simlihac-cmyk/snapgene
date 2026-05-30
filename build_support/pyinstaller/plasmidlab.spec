@@ -32,12 +32,13 @@ hiddenimports += [
     "Bio.SeqIO.FastaIO",
     "Bio.SeqIO.InsdcIO",
     "Bio.SeqRecord",
+    "plasmidlab.gui.main_window",
 ]
 hiddenimports += collect_submodules("Bio.Restriction")
 hiddenimports += collect_submodules("primer3")
 
 a = Analysis(
-    [str(SRC / "plasmidlab" / "gui" / "main_window.py")],
+    [str(SRC / "plasmidlab" / "gui" / "frozen_entry.py")],
     pathex=[str(SRC)],
     binaries=[],
     datas=datas,

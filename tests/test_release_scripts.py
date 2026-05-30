@@ -5,6 +5,7 @@ import sys
 import pytest
 
 from plasmidlab.gui.main_window import main as gui_main
+from plasmidlab.gui.frozen_entry import main as frozen_main
 from scripts import generate_checksums
 from scripts.smoke_release import _isolated_python_env
 
@@ -23,6 +24,17 @@ def test_gui_smoke_json_reports_package_resource_status(tmp_path) -> None:
     smoke_path = tmp_path / "smoke.json"
 
     assert gui_main(["--smoke-json", str(smoke_path)]) == 0
+
+    smoke_json = smoke_path.read_text(encoding="utf-8")
+    assert '"feature_library": true' in smoke_json
+    assert '"package_resources": true' in smoke_json
+    assert '"feature_library_entries":' in smoke_json
+
+
+def test_frozen_entry_smoke_json_reports_package_resource_status(tmp_path) -> None:
+    smoke_path = tmp_path / "frozen-smoke.json"
+
+    assert frozen_main(["--smoke-json", str(smoke_path)]) == 0
 
     smoke_json = smoke_path.read_text(encoding="utf-8")
     assert '"feature_library": true' in smoke_json
