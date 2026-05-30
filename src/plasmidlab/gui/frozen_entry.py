@@ -4,10 +4,9 @@ from __future__ import annotations
 
 import json
 import sys
+from importlib.util import find_spec
 from importlib.metadata import PackageNotFoundError
 from importlib.metadata import version as package_version
-from importlib import resources
-from importlib.util import find_spec
 from pathlib import Path
 
 
@@ -29,15 +28,9 @@ def main(argv: list[str] | None = None) -> int:
             msg = "--smoke-json requires an output path"
             raise SystemExit(msg) from error
 
-        from plasmidlab.core.feature_annotation import load_feature_library
-
-        feature_resource_root = resources.files("plasmidlab.data.features")
-        resource_entries = [
-            resource for resource in feature_resource_root.iterdir() if resource.name.endswith(".json")
-        ]
-        library = load_feature_library()
-        package_resources_available = bool(resource_entries)
-        feature_library_available = bool(library)
+        resource_entries, feature_library_entries = _bundled_feature_library_counts()
+        package_resources_available = resource_entries > 0
+        feature_library_available = feature_library_entries > 0
         output_path.write_text(
             json.dumps(
                 {
@@ -46,8 +39,8 @@ def main(argv: list[str] | None = None) -> int:
                     "feature_library": feature_library_available,
                     "version": _plasmidlab_version(),
                     "package_resources": package_resources_available,
-                    "feature_library_entries": len(library),
-                    "feature_resource_entries": len(resource_entries),
+                    "feature_library_entries": feature_library_entries,
+                    "feature_resource_entries": resource_entries,
                     "ok": package_resources_available and feature_library_available,
                     "python_version_ok": sys.version_info[:2] >= (3, 12),
                     "qt_import": find_spec("PySide6") is not None,
@@ -68,6 +61,48 @@ def _plasmidlab_version() -> str:
         return package_version("plasmidlab")
     except PackageNotFoundError:
         return "0.1.0"
+
+
+def _bundled_feature_library_counts() -> tuple[int, int]:
+    resource_count = 0
+    feature_count = 0
+    for directory in _candidate_feature_library_dirs():
+        if not directory.is_dir():
+            continue
+        for resource in sorted(directory.glob("*.json"), key=lambda path: path.name):
+            resource_count += 1
+            data = json.loads(resource.read_text(encoding="utf-8"))
+            if isinstance(data, dict):
+                raw_entries = data.get("features", [data])
+            elif isinstance(data, list):
+                raw_entries = data
+            else:
+                raw_entries = []
+            feature_count += sum(
+                1
+                for entry in raw_entries
+                if isinstance(entry, dict) and entry.get("name") and entry.get("sequence")
+            )
+        if resource_count:
+            break
+    return resource_count, feature_count
+
+
+def _candidate_feature_library_dirs() -> tuple[Path, ...]:
+    candidates: list[Path] = []
+    frozen_root = getattr(sys, "_MEIPASS", None)
+    if frozen_root:
+        candidates.append(Path(frozen_root) / "plasmidlab" / "data" / "features")
+    if getattr(sys, "frozen", False):
+        executable_dir = Path(sys.executable).resolve().parent
+        candidates.extend(
+            (
+                executable_dir / "_internal" / "plasmidlab" / "data" / "features",
+                executable_dir / "plasmidlab" / "data" / "features",
+            )
+        )
+    candidates.append(Path(__file__).resolve().parents[1] / "data" / "features")
+    return tuple(dict.fromkeys(candidates))
 
 
 def _gui_cli_help() -> str:

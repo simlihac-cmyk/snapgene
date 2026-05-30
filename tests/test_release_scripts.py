@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import builtins
 import sys
 
 import pytest
@@ -40,6 +41,20 @@ def test_frozen_entry_smoke_json_reports_package_resource_status(tmp_path) -> No
     assert '"feature_library": true' in smoke_json
     assert '"package_resources": true' in smoke_json
     assert '"feature_library_entries":' in smoke_json
+
+
+def test_frozen_entry_smoke_json_does_not_import_core_feature_loader(tmp_path, monkeypatch) -> None:
+    smoke_path = tmp_path / "frozen-smoke.json"
+    real_import = builtins.__import__
+
+    def guarded_import(name, *args, **kwargs):
+        if name == "plasmidlab.core.feature_annotation":
+            raise AssertionError("frozen smoke should not import core feature loader")
+        return real_import(name, *args, **kwargs)
+
+    monkeypatch.setattr(builtins, "__import__", guarded_import)
+
+    assert frozen_main(["--smoke-json", str(smoke_path)]) == 0
 
 
 def test_frozen_entry_version_smoke_does_not_import_gui() -> None:
