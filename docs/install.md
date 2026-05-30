@@ -155,8 +155,9 @@ missing.
 
 ## Release Dependency Constraints
 
-`constraints.txt` pins the v0.1-alpha release-build dependency set. Refresh the lock
-metadata only from a clean Python 3.12+ environment:
+`constraints.txt` pins the v0.1-alpha release-build dependency set and may use
+Python-version markers when the Python 3.12 and 3.13 release matrix needs different
+binary wheels. Refresh the lock metadata only from a clean Python 3.12+ environment:
 
 ```powershell
 .\scripts\lock_requirements.ps1
@@ -165,8 +166,8 @@ metadata only from a clean Python 3.12+ environment:
 The command writes `requirements.lock`; review it and update `constraints.txt` before
 tagging a release.
 
-Do not tag or publish v0.1-alpha until `scripts/build_all.ps1` passes on Python 3.12+
-or Python 3.13.
+Do not tag or publish v0.1-alpha until `scripts/build_all.ps1` passes on Python 3.12
+and Python 3.13.
 
 ## Continuous Integration
 

@@ -108,7 +108,8 @@ not affect packaging:
 pwsh ./scripts/build_all.ps1
 ```
 
-`constraints.txt` defines the v0.1-alpha release-build dependency set. Refresh
+`constraints.txt` defines the v0.1-alpha release-build dependency set, including any
+Python-version markers needed by the Python 3.12/3.13 CI matrix. Refresh
 `requirements.lock` and review the constraints only from a clean Python 3.12+
 environment.
 
